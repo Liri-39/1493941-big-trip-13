@@ -7,7 +7,7 @@ import TripListView from "./view/trip-list.js";
 import TripPointView from "./view/trip-point.js";
 import {generateEvent} from "./mocks/event.js";
 import PointEditFormView from "./view/edit-form.js";
-import {render, RenderPosition} from "./util.js";
+import {render, RenderPosition, replace} from "./utils/render.js";
 
 const EVENT_COUNT = 20;
 const tripMain = document.querySelector(`.trip-main`);
@@ -36,11 +36,11 @@ const renderTripPoint = (tripListElement, tripPoint) => {
   const tripPointEditComponent = new PointEditFormView(tripPoint);
 
   const replaceTripPointToEditForm = () => {
-    tripListElement.replaceChild(tripPointEditComponent.getElement(), tripPointComponent.getElement());
+    replace(tripPointEditComponent, tripPointComponent);
   };
 
   const replaceEditFormToTripPoint = () => {
-    tripListElement.replaceChild(tripPointComponent.getElement(), tripPointEditComponent.getElement());
+    replace(tripPointComponent, tripPointEditComponent);
   };
 
   const onEscKeyDown = (evt) => {
@@ -65,7 +65,7 @@ const renderTripPoint = (tripListElement, tripPoint) => {
     document.removeEventListener(`keydown`, onEscKeyDown);
   });
 
-  render(tripListElement, tripPointComponent.getElement(), RenderPosition.BEFOREEND);
+  render(tripListElement, tripPointComponent, RenderPosition.BEFOREEND);
 };
 
 for (let i = 0; i < Math.min(events.length, EVENT_COUNT); i++) {

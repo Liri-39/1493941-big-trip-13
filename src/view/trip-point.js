@@ -1,4 +1,4 @@
-import {getDatesDuration} from "../util.js";
+import {getDatesDuration} from "../utils/util.js";
 import {offerOptions} from "../mocks/event.js";
 import dayjs from "dayjs";
 import AbstractView from "./abstract.js";

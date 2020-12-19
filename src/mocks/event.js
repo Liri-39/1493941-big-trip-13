@@ -1,4 +1,4 @@
-import {getRandomInteger} from "../util.js";
+import {getRandomInteger} from "../utils/common.js";
 import dayjs from "dayjs";
 
 const PHOTO_PATH = `http://picsum.photos/248/152?r=`;
