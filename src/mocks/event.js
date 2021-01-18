@@ -28,66 +28,94 @@ const pointTypes = [
   pointTypeEnum.SIGHTSEEING,
   pointTypeEnum.RESTAURANT,
 ];
-const pointDestinations = [
-  `Chamonix`,
-  `Geneva`,
-  `Amsterdam`,
-  `Nice`,
-  `Monaco`,
-  `Menton`,
-];
 
-const offerOptions = {
-  [pointTypeEnum.FLIGHT]: {
-    luggage: {
-      name: `Add luggage`,
-      price: 30,
-    },
-    comfort: {
-      name: `Switch to comfort class`,
-      price: 100,
-    },
-    meal: {
-      name: `Add meal`,
-      price: 15,
-    },
-    seats: {
-      name: `Choose seats`,
-      price: 5,
-    },
-    train: {
-      name:
-        `Travel by train`,
-      price: 40,
-    },
+const offerOptions = [
+  {
+    type: pointTypeEnum.FLIGHT,
+    offers: [
+      {
+        name: `Add luggage`,
+        price: 30,
+      },
+      {
+        name: `Switch to comfort class`,
+        price: 100,
+      },
+      {
+        name: `Add meal`,
+        price: 15,
+      },
+      {
+        name: `Choose seats`,
+        price: 5,
+      },
+      {
+        name:
+          `Travel by train`,
+        price: 40,
+      },
+    ],
   },
-  [pointTypeEnum.TAXI]: {
-    taxi: {
-      name: `Order Uber`,
-      price: 20,
-    },
+  {
+    type: pointTypeEnum.TAXI,
+    offers: [
+      {
+        name: `Order Uber`,
+        price: 20,
+      },
+    ]
   },
-  [pointTypeEnum.SIGHTSEEING]: {
-    tickets: {
-      name: `Book tickets`,
-      price: 40,
-    },
-    lunch: {
-      name: `Lunch in city`,
-      price: 30,
-    },
-    breakfast: {
-      name: `Add breakfast`,
-      price: 50,
-    },
+  {
+    type: pointTypeEnum.SIGHTSEEING,
+    offers: [
+      {
+        name: `Book tickets`,
+        price: 40,
+      },
+      {
+        name: `Lunch in city`,
+        price: 30,
+      },
+      {
+        name: `Add breakfast`,
+        price: 50,
+      },
+    ]
   },
-  [pointTypeEnum.DRIVE]: {
-    car: {
-      name: `Rent a car`,
-      price: 200,
-    },
+  {
+    type: pointTypeEnum.DRIVE,
+    offers: [
+      {
+        name: `Rent a car`,
+        price: 200,
+      },
+    ]
   },
-};
+  {
+    type: pointTypeEnum.BUS,
+    offers: []
+  },
+  {
+    type: pointTypeEnum.RESTAURANT,
+    offers: []
+  },
+  {
+    type: pointTypeEnum.TRAIN,
+    offers: []
+  },
+  {
+    type: pointTypeEnum.SHIP,
+    offers: []
+  },
+  {
+    type: pointTypeEnum.TRANSPORT,
+    offers: []
+  },
+  {
+    type: pointTypeEnum.CHECKIN,
+    offers: []
+  }
+];
 
 const pointDescription = [
   `Lorem ipsum dolor sit amet, consectetur adipiscing elit. `,
@@ -115,14 +143,12 @@ const generateDate = () => {
 };
 
 const generateOfferOptions = (type) => {
-  const ret = [];
-  for (let key in offerOptions[type]) {
-    if (getRandomInteger(0, 1)) {
-      // noinspection JSUnfilteredForInLoop
-      ret.push(key);
-    }
+  const ret = offerOptions.filter((item) => item.type === type).map((item) => item.offers)[0].slice();
+  if (Array.isArray(ret)) {
+    return ret.splice(getRandomInteger(0, ret.length - 1), getRandomInteger(0, ret.length - 1));
+  } else {
+    return [];
   }
-  return ret;
 };
 
 const generateDescription = () => {
@@ -130,47 +156,56 @@ const generateDescription = () => {
 };
 
 const generatePhotos = () => {
-  return Array(getRandomInteger(0, 5)).fill().map(() => `${PHOTO_PATH}${getRandomInteger(1, 15)}`);
+  return Array(getRandomInteger(0, 5)).fill().map(() => ({
+    "src": `${PHOTO_PATH}${getRandomInteger(1, 15)}`,
+    "description": `PHOTO`,
+  }));
 };
 
-const point = {
-  CHAMONIX: {
+const destinations = [
+  {
+    name: `Chamonix`,
     description: generateDescription(),
     photo: generatePhotos(),
   },
-  GENEVA: {
+  {
+    name: `Geneva`,
     description: generateDescription(),
     photo: generatePhotos(),
   },
-  AMSTERDAM: {
+  {
+    name: `Amsterdam`,
     description: generateDescription(),
     photo: generatePhotos(),
   },
-  NICE: {
+  {
+    name: `Nice`,
     description: generateDescription(),
     photo: generatePhotos(),
   },
-  MONACO: {
+  {
+    name: `Monaco`,
     description: generateDescription(),
     photo: generatePhotos(),
   },
-  MENTON: {
+  {
+    name: `Menton`,
     description: generateDescription(),
     photo: generatePhotos(),
-  }
-};
+  },
+];
 
 const generateEvent = () => {
   const eventDates = generateDate();
   const type = pointTypes[getRandomInteger(0, pointTypes.length - 1)];
-  const destination = pointDestinations[getRandomInteger(0, pointDestinations.length - 1)];
+  const destination = destinations[getRandomInteger(0, destinations.length - 1)];
   return {
     id: generateId(),
     type,
-    destination,
+    destination: destination.name,
     offers: generateOfferOptions(type),
-    description: point[destination.toUpperCase()].description,
-    photo: point[destination.toUpperCase()].photo,
+    description: destination.description,
+    photo: destination.photo,
     dates: {
       start: eventDates.startDate,
       end: eventDates.endDate,
@@ -184,7 +219,6 @@ const generateEvent = () => {
 export {
   generateEvent,
   offerOptions,
-  pointDestinations,
   pointTypes,
-  point
+  destinations,
 };

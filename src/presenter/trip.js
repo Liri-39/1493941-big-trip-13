@@ -11,8 +11,10 @@ import {sortByDate, sortByDuration, sortByPrice} from "../utils/util.js";
 import {SortType, UpdateType, UserAction} from "../const";
 
 export default class Trip {
-  constructor(tripInfoContainer, tripMenuContainer, tripPointsContainer, pointsModel) {
+  constructor(tripInfoContainer, tripMenuContainer, tripPointsContainer, pointsModel, offersModel, destinationsModel) {
     this._pointsModel = pointsModel;
+    this._offersModel = offersModel;
+    this._destinationsModel = destinationsModel;
     this._tripInfoContainer = tripInfoContainer;
     this._tripMenuContainer = tripMenuContainer;
     this._tripPointsContainer = tripPointsContainer;
@@ -36,6 +38,8 @@ export default class Trip {
   }
 
   init() {
+    this.offers = this._offersModel.getOffers();
+    this.destination = this._destinationsModel.getDestination();
     this.points = this._getPoints();
     this._tripInfoComponent = new TripInfoView(this.points);
     this._costInfoComponent = new CostInfoView(this.points);
@@ -119,15 +123,15 @@ export default class Trip {
     render(this._tripMenuContainer, this._filterFormComponent, RenderPosition.AFTEREND);
   }
 
-  _renderPoint(tripPoint) {
+  _renderPoint(point) {
     const pointPresenter = new PointPresenter(this._tripListComponent, this._handleViewAction, this._handleModeChange);
-    pointPresenter.init(tripPoint);
-    this._tripPointsPresenter[tripPoint.id] = pointPresenter;
+    pointPresenter.init(point, this.offers, this.destination);
+    this._tripPointsPresenter[point.id] = pointPresenter;
   }
 
   _renderTripPoints() {
     this._getPoints()
-      .forEach((tripPoint) => this._renderPoint(tripPoint));
+      .forEach((point) => this._renderPoint(point));
   }
 
   _handleViewAction(actionType, updateType, update) {
@@ -180,6 +184,7 @@ export default class Trip {
   }
 
   _renderTrip() {
+
     const points = this._getPoints();
     const pointsCount = points.length;
 

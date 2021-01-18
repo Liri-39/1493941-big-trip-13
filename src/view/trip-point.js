@@ -1,11 +1,9 @@
 import {getDatesDuration} from "../utils/util.js";
-import {offerOptions} from "../mocks/event.js";
 import dayjs from "dayjs";
 import AbstractView from "./abstract.js";
 
 const createTripPointElement = (event) => {
   const {type, destination, offers, dates, price, isFavorite} = event;
-  const eventOptions = offerOptions[type];
 
   return `<li class="trip-events__item">
   <div class="event">
@@ -27,9 +25,9 @@ const createTripPointElement = (event) => {
     </p>
     ${offers.length > 0 ? `<h4 class="visually-hidden">Offers:</h4>
     <ul class="event__selected-offers">` : ``}
-    ${offers.map((key) => `
-    <li class="event__offer"><span class="event__offer-title">${eventOptions[key].name}
-    </span>&plus;&euro;&nbsp;<span class="event__offer-price">${eventOptions[key].price}
+    ${offers.map((item) => `
+    <li class="event__offer"><span class="event__offer-title">${item.name}
+    </span>&plus;&euro;&nbsp;<span class="event__offer-price">${item.price}
     </span></li>`).join(``)}
     ${offers.length > 0 ? `</ul>` : ``}
     <button class="event__favorite-btn ${isFavorite ? `event__favorite-btn--active` : ``}" type="button">
