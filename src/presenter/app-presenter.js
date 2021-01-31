@@ -84,7 +84,7 @@ export default class AppPresenter {
     menuComponent.setAddButtonClickHandler(this.handleAddButtonClick);
     menuComponent.setTableTabClickHandler(this.handleStatsTabClick);
     menuComponent.setStatsTabClickHandler(this.handleTableTabClick);
-    render(this.pageHeaderContainer, this.menuComponent, RenderPosition.AFTERBEGIN);
+    render(this.pageHeaderContainer, menuComponent, RenderPosition.AFTERBEGIN);
 
     this.menuComponent = menuComponent;
   }
