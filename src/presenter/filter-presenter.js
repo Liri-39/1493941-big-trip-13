@@ -6,8 +6,8 @@ import {filter} from "../utils/filter.js";
 export default class FilterPresenter {
   constructor(filterContainer, filterModel, pointsModel) {
     this._filterContainer = filterContainer;
-    this._filterModel = filterModel;
     this._pointsModel = pointsModel;
+    this._filterModel = filterModel;
     this._currentFilter = null;
 
     this._filterComponent = null;
